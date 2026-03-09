@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Operations Intelligence Hub | NetOps · SecOps · AppOps · DevOps · AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --paper: #f5f0e8;
+    --gold: #c8960c;
+    --gold-light: #e8b824;
+    --accent: #d4af37;
+    --netops: #00ff88;
+    --secops: #ff3355;
+    --appops: #00d4ff;
+    --devops: #4488ff;
+    --ai: #cc66ff;
+    --muted: #888880;
+    --rule: #2a2a30;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Lora',serif;
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+  /* Noise texture overlay */
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:0;opacity:.4;
+  }
+  .wrapper{position:relative;z-index:1}
+
+  /* ─── MASTHEAD ─── */
+  .masthead{
+    border-bottom:1px solid var(--rule);
+    padding:1.2rem 2rem;
+    display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;background:rgba(10,10,15,.95);
+    backdrop-filter:blur(12px);z-index:100;
+  }
+  .masthead-logo{
+    font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;
+    letter-spacing:.3em;text-transform:uppercase;
+    color:var(--gold);
+  }
+  .masthead-nav{display:flex;gap:2rem}
+  .masthead-nav a{
+    font-family:'Space Mono',monospace;font-size:.7rem;
+    color:var(--muted);text-decoration:none;letter-spacing:.1em;
+    transition:color .2s;
+  }
+  .masthead-nav a:hover{color:var(--paper)}
+
+  /* ─── HERO ─── */
+  .hero{
+    min-height:80vh;display:grid;place-items:center;
+    padding:4rem 2rem;text-align:center;
+    position:relative;
+  }
+  .hero-date{
+    font-family:'Space Mono',monospace;font-size:.7rem;
+    color:var(--gold);letter-spacing:.2em;margin-bottom:2rem;
+    animation:fadeUp .8s ease both;
+  }
+  .hero-title{
+    font-family:'Syne',sans-serif;font-weight:800;
+    font-size:clamp(3rem,10vw,7rem);
+    line-height:.95;letter-spacing:-.02em;
+    margin-bottom:1.5rem;
+    animation:fadeUp .8s .1s ease both;
+  }
+  .hero-title em{
+    font-style:italic;font-family:'Lora',serif;
+    font-weight:400;color:var(--gold);
+  }
+  .hero-sub{
+    font-size:1.1rem;color:var(--muted);max-width:52ch;
+    margin:0 auto 3rem;line-height:1.7;
+    animation:fadeUp .8s .2s ease both;
+  }
+  .hero-pills{
+    display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;
+    animation:fadeUp .8s .3s ease both;
+  }
+  .pill{
+    font-family:'Space Mono',monospace;font-size:.7rem;
+    padding:.4rem 1.2rem;border-radius:100px;
+    text-transform:uppercase;letter-spacing:.1em;
+    text-decoration:none;transition:all .2s;
+    border:1px solid;
+  }
+  .pill-netops{color:var(--netops);border-color:var(--netops);} 
+  .pill-netops:hover{background:var(--netops);color:var(--ink)}
+  .pill-secops{color:var(--secops);border-color:var(--secops);}
+  .pill-secops:hover{background:var(--secops);color:var(--paper)}
+  .pill-appops{color:var(--appops);border-color:var(--appops);}
+  .pill-appops:hover{background:var(--appops);color:var(--ink)}
+  .pill-devops{color:var(--devops);border-color:var(--devops);}
+  .pill-devops:hover{background:var(--devops);color:var(--paper)}
+  .pill-ai{color:var(--ai);border-color:var(--ai);}
+  .pill-ai:hover{background:var(--ai);color:var(--ink)}
+
+  .hero-rule{
+    position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+    width:1px;height:4rem;background:linear-gradient(to bottom,var(--gold),transparent);
+  }
+
+  /* ─── SECTION LABEL ─── */
+  .section-label{
+    font-family:'Space Mono',monospace;font-size:.65rem;
+    letter-spacing:.25em;color:var(--gold);text-transform:uppercase;
+    padding:4rem 2rem 1.5rem;max-width:1400px;margin:0 auto;
+    border-top:1px solid var(--rule);
+  }
+
+  /* ─── CARDS GRID ─── */
+  .cards-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));
+    gap:1px;background:var(--rule);
+    max-width:1400px;margin:0 auto 1px;
+  }
+  .card{
+    background:var(--ink);padding:3rem 2.5rem;
+    text-decoration:none;color:var(--paper);
+    position:relative;overflow:hidden;
+    transition:background .3s;display:block;
+  }
+  .card::before{
+    content:'';position:absolute;inset:0;
+    opacity:0;transition:opacity .3s;
+  }
+  .card-netops::before{background:radial-gradient(circle at 0 100%,rgba(0,255,136,.08),transparent 60%)}
+  .card-secops::before{background:radial-gradient(circle at 0 100%,rgba(255,51,85,.08),transparent 60%)}
+  .card-appops::before{background:radial-gradient(circle at 0 100%,rgba(0,212,255,.08),transparent 60%)}
+  .card-devops::before{background:radial-gradient(circle at 0 100%,rgba(68,136,255,.08),transparent 60%)}
+  .card-ai::before{background:radial-gradient(circle at 0 100%,rgba(204,102,255,.08),transparent 60%)}
+  .card:hover::before{opacity:1}
+  .card:hover{background:#12121a}
+
+  .card-num{
+    font-family:'Space Mono',monospace;font-size:.6rem;
+    color:var(--muted);letter-spacing:.2em;margin-bottom:2rem;
+  }
+  .card-icon{
+    font-size:2.5rem;margin-bottom:1.5rem;
+    filter:drop-shadow(0 0 20px currentColor);
+  }
+  .card-tag{
+    font-family:'Space Mono',monospace;font-size:.65rem;
+    letter-spacing:.15em;text-transform:uppercase;
+    margin-bottom:.8rem;font-weight:700;
+  }
+  .tag-netops{color:var(--netops)}
+  .tag-secops{color:var(--secops)}
+  .tag-appops{color:var(--appops)}
+  .tag-devops{color:var(--devops)}
+  .tag-ai{color:var(--ai)}
+
+  .card-title{
+    font-family:'Syne',sans-serif;font-weight:700;
+    font-size:1.8rem;line-height:1.1;margin-bottom:1rem;
+  }
+  .card-desc{
+    font-size:.95rem;color:var(--muted);line-height:1.7;
+    margin-bottom:2rem;
+  }
+  .card-meta{
+    display:flex;gap:2rem;
+    font-family:'Space Mono',monospace;font-size:.65rem;
+    color:var(--muted);
+  }
+  .card-meta span{display:flex;flex-direction:column;gap:.3rem}
+  .card-meta strong{color:var(--paper);font-size:.9rem}
+  .card-arrow{
+    position:absolute;bottom:2.5rem;right:2.5rem;
+    font-size:1.5rem;color:var(--muted);
+    transition:transform .2s,color .2s;
+  }
+  .card:hover .card-arrow{transform:translate(4px,-4px)}
+  .card-netops:hover .card-arrow{color:var(--netops)}
+  .card-secops:hover .card-arrow{color:var(--secops)}
+  .card-appops:hover .card-arrow{color:var(--appops)}
+  .card-devops:hover .card-arrow{color:var(--devops)}
+  .card-ai:hover .card-arrow{color:var(--ai)}
+
+  /* ─── CLOUD STRIP ─── */
+  .cloud-strip{
+    max-width:1400px;margin:0 auto;padding:4rem 2rem;
+    border-top:1px solid var(--rule);
+  }
+  .cloud-strip-title{
+    font-family:'Space Mono',monospace;font-size:.65rem;
+    letter-spacing:.25em;color:var(--gold);text-transform:uppercase;
+    margin-bottom:2rem;
+  }
+  .cloud-logos{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--rule);
+  }
+  .cloud-col{
+    background:var(--ink);padding:2rem;
+  }
+  .cloud-col-header{
+    font-family:'Syne',sans-serif;font-weight:700;
+    font-size:1rem;margin-bottom:1.5rem;
+    display:flex;align-items:center;gap:.8rem;
+  }
+  .cloud-badge{
+    font-family:'Space Mono',monospace;font-size:.6rem;
+    padding:.3rem .7rem;border-radius:4px;
+    background:rgba(255,255,255,.06);
+    letter-spacing:.1em;
+  }
+  .cloud-links{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+  .cloud-links li a{
+    font-family:'Space Mono',monospace;font-size:.7rem;
+    color:var(--muted);text-decoration:none;
+    transition:color .2s;display:flex;align-items:center;gap:.5rem;
+  }
+  .cloud-links li a::before{content:'→';font-size:.6rem}
+  .cloud-links li a:hover{color:var(--paper)}
+
+  /* ─── STATS BAR ─── */
+  .stats-bar{
+    border-top:1px solid var(--rule);
+    display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+    background:var(--rule);max-width:1400px;margin:0 auto;
+  }
+  .stat{
+    background:var(--ink);padding:2rem;text-align:center;
+  }
+  .stat-num{
+    font-family:'Syne',sans-serif;font-weight:800;
+    font-size:2.5rem;color:var(--gold);display:block;
+  }
+  .stat-label{
+    font-family:'Space Mono',monospace;font-size:.6rem;
+    color:var(--muted);letter-spacing:.15em;text-transform:uppercase;
+    margin-top:.3rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer{
+    border-top:1px solid var(--rule);padding:2rem;
+    text-align:center;
+    font-family:'Space Mono',monospace;font-size:.65rem;
+    color:var(--muted);max-width:1400px;margin:0 auto;
+  }
+  footer a{color:var(--gold);text-decoration:none}
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @media(max-width:768px){
+    .cards-grid{grid-template-columns:1fr}
+    .cloud-logos{grid-template-columns:1fr}
+    .stats-bar{grid-template-columns:repeat(2,1fr)}
+    .masthead-nav{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<header class="masthead">
+  <div class="masthead-logo">Cloud Ops Intelligence</div>
+  <nav class="masthead-nav">
+    <a href="netops/index.html">NetOps</a>
+    <a href="secops/index.html">SecOps</a>
+    <a href="appops/index.html">AppOps</a>
+    <a href="devops/index.html">DevOps</a>
+    <a href="ai/index.html">AI · MLOps</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <p class="hero-date">⬡ VOL. I &nbsp;·&nbsp; 2025 EDITION &nbsp;·&nbsp; AWS · AZURE · GCP</p>
+      <h1 class="hero-title">Cloud<br><em>Operations</em><br>Intelligence</h1>
+      <p class="hero-sub">A comprehensive knowledge hub spanning Network, Security, Application, Developer Operations and AI — with direct references to every official cloud documentation across AWS, Azure, and Google Cloud Platform.</p>
+      <div class="hero-pills">
+        <a href="netops/index.html" class="pill pill-netops">NetOps</a>
+        <a href="secops/index.html" class="pill pill-secops">SecOps</a>
+        <a href="appops/index.html" class="pill pill-appops">AppOps</a>
+        <a href="devops/index.html" class="pill pill-devops">DevOps</a>
+        <a href="ai/index.html" class="pill pill-ai">AI · MLOps</a>
+      </div>
+    </div>
+    <div class="hero-rule"></div>
+  </section>
+
+  <div class="section-label">/ 01 — Domains</div>
+
+  <div class="cards-grid">
+
+    <a href="netops/index.html" class="card card-netops">
+      <div class="card-num">01 / 05</div>
+      <div class="card-icon" style="color:var(--netops)">◈</div>
+      <div class="card-tag tag-netops">Network Operations</div>
+      <h2 class="card-title">NetOps</h2>
+      <p class="card-desc">SD-WAN architecture, BGP routing, network automation, cloud-native networking across VPC/VNet/GCP VPC, observability, and zero-touch provisioning with Ansible & Terraform.</p>
+      <div class="card-meta">
+        <span><strong>5</strong>LinkedIn Posts</span>
+        <span><strong>10</strong>Blog Articles</span>
+        <span><strong>AWS·AZ·GCP</strong>Cloud Refs</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </a>
+
+    <a href="secops/index.html" class="card card-secops">
+      <div class="card-num">02 / 05</div>
+      <div class="card-icon" style="color:var(--secops)">◉</div>
+      <div class="card-tag tag-secops">Security Operations</div>
+      <h2 class="card-title">SecOps</h2>
+      <p class="card-desc">Zero Trust architecture, SIEM/SOAR pipelines, threat hunting, cloud-native WAF, CSPM, identity federation, secret management, and compliance automation across all three clouds.</p>
+      <div class="card-meta">
+        <span><strong>5</strong>LinkedIn Posts</span>
+        <span><strong>10</strong>Blog Articles</span>
+        <span><strong>AWS·AZ·GCP</strong>Cloud Refs</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </a>
+
+    <a href="appops/index.html" class="card card-appops">
+      <div class="card-num">03 / 05</div>
+      <div class="card-icon" style="color:var(--appops)">◇</div>
+      <div class="card-tag tag-appops">Application Operations</div>
+      <h2 class="card-title">AppOps</h2>
+      <p class="card-desc">Full-stack observability, SLO/SLI/SLA engineering, distributed tracing, chaos engineering, incident management, FinOps, and platform engineering with OpenTelemetry.</p>
+      <div class="card-meta">
+        <span><strong>5</strong>LinkedIn Posts</span>
+        <span><strong>10</strong>Blog Articles</span>
+        <span><strong>AWS·AZ·GCP</strong>Cloud Refs</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </a>
+
+    <a href="devops/index.html" class="card card-devops">
+      <div class="card-num">04 / 05</div>
+      <div class="card-icon" style="color:var(--devops)">◆</div>
+      <div class="card-tag tag-devops">Developer Operations</div>
+      <h2 class="card-title">DevOps</h2>
+      <p class="card-desc">CI/CD pipeline engineering, GitOps with ArgoCD & Flux, Infrastructure as Code with Terraform & Pulumi, container orchestration with Kubernetes, and supply-chain security.</p>
+      <div class="card-meta">
+        <span><strong>5</strong>LinkedIn Posts</span>
+        <span><strong>10</strong>Blog Articles</span>
+        <span><strong>AWS·AZ·GCP</strong>Cloud Refs</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </a>
+
+    <a href="ai/index.html" class="card card-ai" style="grid-column:span 1">
+      <div class="card-num">05 / 05</div>
+      <div class="card-icon" style="color:var(--ai)">◎</div>
+      <div class="card-tag tag-ai">Artificial Intelligence · MLOps</div>
+      <h2 class="card-title">AI · MLOps</h2>
+      <p class="card-desc">MLOps lifecycle management, LLMOps with Bedrock/Vertex AI/Azure OpenAI, model governance, feature stores, A/B testing infrastructure, and responsible AI at enterprise scale.</p>
+      <div class="card-meta">
+        <span><strong>5</strong>LinkedIn Posts</span>
+        <span><strong>10</strong>Blog Articles</span>
+        <span><strong>AWS·AZ·GCP</strong>Cloud Refs</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </a>
+
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">25</span><span class="stat-label">LinkedIn Posts</span></div>
+    <div class="stat"><span class="stat-num">50</span><span class="stat-label">Blog Articles</span></div>
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">Cloud Providers</span></div>
+    <div class="stat"><span class="stat-num">150+</span><span class="stat-label">Official Doc Links</span></div>
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">Domains Covered</span></div>
+  </div>
+
+  <div class="cloud-strip">
+    <div class="cloud-strip-title">/ Cloud Platform Quick Reference</div>
+    <div class="cloud-logos">
+      <div class="cloud-col">
+        <div class="cloud-col-header" style="color:#ff9900">
+          ☁ Amazon Web Services
+          <span class="cloud-badge">AWS</span>
+        </div>
+        <ul class="cloud-links">
+          <li><a href="https://docs.aws.amazon.com/vpc/" target="_blank" rel="noopener">Amazon VPC</a></li>
+          <li><a href="https://docs.aws.amazon.com/guardduty/" target="_blank" rel="noopener">Amazon GuardDuty</a></li>
+          <li><a href="https://docs.aws.amazon.com/AmazonEKS/latest/userguide/" target="_blank" rel="noopener">Amazon EKS</a></li>
+          <li><a href="https://docs.aws.amazon.com/sagemaker/latest/dg/" target="_blank" rel="noopener">Amazon SageMaker</a></li>
+          <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/" target="_blank" rel="noopener">Amazon Bedrock</a></li>
+          <li><a href="https://docs.aws.amazon.com/" target="_blank" rel="noopener">Full AWS Documentation →</a></li>
+        </ul>
+      </div>
+      <div class="cloud-col">
+        <div class="cloud-col-header" style="color:#0078d4">
+          ☁ Microsoft Azure
+          <span class="cloud-badge">AZURE</span>
+        </div>
+        <ul class="cloud-links">
+          <li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/" target="_blank" rel="noopener">Azure Virtual Network</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/azure/sentinel/" target="_blank" rel="noopener">Microsoft Sentinel</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/azure/aks/" target="_blank" rel="noopener">Azure Kubernetes Service</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/azure/machine-learning/" target="_blank" rel="noopener">Azure Machine Learning</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/azure/ai-services/" target="_blank" rel="noopener">Azure AI Services</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/azure/" target="_blank" rel="noopener">Full Azure Documentation →</a></li>
+        </ul>
+      </div>
+      <div class="cloud-col">
+        <div class="cloud-col-header" style="color:#4285f4">
+          ☁ Google Cloud Platform
+          <span class="cloud-badge">GCP</span>
+        </div>
+        <ul class="cloud-links">
+          <li><a href="https://cloud.google.com/vpc/docs" target="_blank" rel="noopener">Cloud VPC</a></li>
+          <li><a href="https://cloud.google.com/security-command-center/docs" target="_blank" rel="noopener">Security Command Center</a></li>
+          <li><a href="https://cloud.google.com/kubernetes-engine/docs" target="_blank" rel="noopener">Google Kubernetes Engine</a></li>
+          <li><a href="https://cloud.google.com/vertex-ai/docs" target="_blank" rel="noopener">Vertex AI</a></li>
+          <li><a href="https://cloud.google.com/build/docs" target="_blank" rel="noopener">Cloud Build</a></li>
+          <li><a href="https://cloud.google.com/docs" target="_blank" rel="noopener">Full GCP Documentation →</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div style="max-width:1400px;margin:0 auto;padding:3rem 2rem;border-top:1px solid var(--rule)">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;background:linear-gradient(135deg,rgba(200,150,12,.06),rgba(212,175,55,.04));border:1px solid rgba(200,150,12,.15);border-radius:16px;padding:2rem 2.5rem">
+    <div style="display:flex;align-items:center;gap:1.2rem">
+      <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--ink)">KO</div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Designed by</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--paper)">Kehinde Ogunlowo</div>
+        <div style="font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted)">Cloud Security Architect &middot; AI Specialist</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+      <a href="https://kogunlowo123.github.io/AI-Agent-Specializations/" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--gold);border:1px solid rgba(200,150,12,.25);padding:.5rem 1rem;border-radius:8px;text-decoration:none">AI Specializations</a>
+      <a href="https://github.com/kogunlowo123" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--paper);border:1px solid var(--rule);padding:.5rem 1rem;border-radius:8px;text-decoration:none">GitHub</a>
+      <a href="https://www.linkedin.com/in/kehinde-ogunlowo/" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--paper);border:1px solid var(--rule);padding:.5rem 1rem;border-radius:8px;text-decoration:none">LinkedIn</a>
+      <a href="https://citadelcloudmanagement.com" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:.7rem;color:var(--paper);border:1px solid var(--rule);padding:.5rem 1rem;border-radius:8px;text-decoration:none">Citadel Cloud</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Cloud Operations Intelligence Hub &nbsp;·&nbsp; <a href="https://docs.aws.amazon.com/" target="_blank">AWS Docs</a> &nbsp;·&nbsp; <a href="https://learn.microsoft.com/en-us/azure/" target="_blank">Azure Docs</a> &nbsp;·&nbsp; <a href="https://cloud.google.com/docs" target="_blank">GCP Docs</a></p>
+  <p style="margin-top:.5rem">Content for educational and professional sharing purposes. All product references link to official vendor documentation.</p>
+</footer>
+
+</div>
+</body>
+</html>

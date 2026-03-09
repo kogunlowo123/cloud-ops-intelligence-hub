@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Development Operations | Cloud Engineering Hub</title>
+  <meta name="description" content="Comprehensive Development Operations resources, blog posts, and LinkedIn content for cloud engineers.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Courier+Prime&family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=IBM+Plex+Mono&family=Syne:wght@400;700&family=JetBrains+Mono&family=Rajdhani:wght@400;600;700&family=Fira+Code&family=Cinzel:wght@400;700&display=swap');
+
+    :root {
+      --primary: #FF9100;
+      --accent: #E65100;
+      --bg: #050300;
+      --text: #e8e8e8;
+      --muted: #888;
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    nav .brand {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.3rem;
+      color: var(--primary);
+      text-decoration: none;
+      margin-right: auto;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    nav a:hover, nav a.active {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, #FF910022, transparent);
+      pointer-events: none;
+    }
+    .hero-icon { font-size: 3.5rem; margin-bottom: 1rem; display: block; }
+    .hero h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--primary);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .hero .tagline {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      border: 1px solid var(--primary);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #000;
+      font-weight: 700;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-outline { color: var(--primary); }
+    .btn-outline:hover { background: var(--primary); color: #000; transform: translateY(-1px); }
+
+    /* SECTIONS */
+    section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+    section h2 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .section-sub { color: var(--muted); margin-bottom: 2.5rem; font-size: 0.9rem; }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary)44, transparent);
+      margin: 1rem 0 2.5rem;
+    }
+
+    /* GRID */
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem; }
+
+    /* PRODUCT CARDS */
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: all 0.25s;
+    }
+    .product-card:hover {
+      border-color: var(--primary);
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-2px);
+    }
+    .product-card h4 { color: var(--text); margin: 0.5rem 0 0.3rem; font-size: 0.95rem; }
+    .product-card p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+    .doc-link { font-size: 0.78rem; color: var(--primary); margin-top: 0.75rem; display: block; }
+    .cloud-badge {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    /* LINKEDIN POST CARDS */
+    .post-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: all 0.25s;
+      position: relative;
+    }
+    .post-card:hover { border-color: var(--primary)88; }
+    .post-card .post-num {
+      position: absolute; top: 1.25rem; right: 1.25rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.5rem;
+      color: var(--primary)22;
+    }
+    .post-card h3 { color: var(--primary); margin-bottom: 1rem; font-size: 1rem; line-height: 1.4; }
+    .post-card pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: rgba(0,0,0,0.3);
+      padding: 1.25rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary);
+      max-height: 350px;
+      overflow-y: auto;
+    }
+    .post-tags { margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .post-tags span {
+      font-size: 0.75rem;
+      color: var(--primary);
+      background: #FF910011;
+      border: 1px solid #FF910044;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+    .copy-btn {
+      margin-top: 1rem;
+      background: none;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 0.4rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: var(--primary); color: #000; }
+
+    /* BLOG LIST CARDS */
+    .blog-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: all 0.25s;
+    }
+    .blog-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .blog-num {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.75rem;
+      color: var(--primary);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+    .blog-card h3 { font-size: 1rem; margin-bottom: 0.4rem; color: var(--text); line-height: 1.4; }
+    .blog-card p { font-size: 0.83rem; color: var(--muted); }
+    .read-more { font-size: 0.8rem; color: var(--primary); margin-top: 0.75rem; display: block; }
+
+    /* BLOG POST PAGE */
+    .blog-content { max-width: 800px; margin: 0 auto; }
+    .blog-content h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; color: var(--primary); margin: 2rem 0 0.75rem; }
+    .blog-content p { margin-bottom: 1.2rem; color: #ccc; }
+    .blog-content ul, .blog-content ol { margin: 0.75rem 0 1.2rem 1.5rem; color: #ccc; }
+    .blog-content li { margin-bottom: 0.4rem; }
+    .blog-content strong { color: var(--text); }
+    .blog-content em { color: var(--primary); font-style: normal; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    footer .footer-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--primary); }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--primary)44; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary)88; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0.5rem 1rem; }
+      .hero { padding: 3rem 1rem 2rem; }
+      section { padding: 2.5rem 1rem; }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    }
+    </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="brand">☁ CloudOps Hub</a>
+  <a href="/netops/" >🌐 NetOps</a>
+<a href="/secops/" >🛡️ SecOps</a>
+<a href="/appops/" >⚡ AppOps</a>
+<a href="/devops/" class="active">🔄 DevOps</a>
+<a href="/ai/" >🧠 AI & MLOps</a>
+</nav>
+
+<div class="hero">
+  <span class="hero-icon">🔄</span>
+  <h1>DevOps</h1>
+  <p class="tagline">Integrate. Build. Deploy. Iterate.</p>
+  <div class="hero-ctas">
+    <a href="linkedin-posts.html" class="btn btn-primary">LinkedIn Posts</a>
+    <a href="blog/index.html" class="btn btn-outline">Blog Articles</a>
+  </div>
+</div>
+
+<section>
+  <h2>AWS Resources</h2>
+  <p class="section-sub">Official AWS documentation for Development Operations</p>
+  <div class="divider"></div>
+  <div class="grid-3">
+      <a href="https://docs.aws.amazon.com/codepipeline/latest/userguide/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#FF990022;border:1px solid #FF9900;color:#FF9900">AWS</span>
+        <h4>AWS CodePipeline</h4>
+        <p>Continuous delivery service</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#FF990022;border:1px solid #FF9900;color:#FF9900">AWS</span>
+        <h4>AWS CodeBuild</h4>
+        <p>Fully managed build service</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#FF990022;border:1px solid #FF9900;color:#FF9900">AWS</span>
+        <h4>AWS CodeDeploy</h4>
+        <p>Automated deployment service</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/cdk/v2/guide/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#FF990022;border:1px solid #FF9900;color:#FF9900">AWS</span>
+        <h4>AWS CDK</h4>
+        <p>Cloud Development Kit</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#FF990022;border:1px solid #FF9900;color:#FF9900">AWS</span>
+        <h4>AWS CloudFormation</h4>
+        <p>Infrastructure as code</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#FF990022;border:1px solid #FF9900;color:#FF9900">AWS</span>
+        <h4>AWS Systems Manager</h4>
+        <p>Operations hub for AWS</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#FF990022;border:1px solid #FF9900;color:#FF9900">AWS</span>
+        <h4>Amazon ECR</h4>
+        <p>Container image registry</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/config/latest/developerguide/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#FF990022;border:1px solid #FF9900;color:#FF9900">AWS</span>
+        <h4>AWS Config</h4>
+        <p>Resource configuration tracking</p>
+        <span class="doc-link">Official Docs →</span>
+      </a></div>
+</section>
+
+<section>
+  <h2>Azure Resources</h2>
+  <p class="section-sub">Official Microsoft Azure documentation for Development Operations</p>
+  <div class="divider"></div>
+  <div class="grid-3">
+      <a href="https://docs.microsoft.com/en-us/azure/devops/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#0089D622;border:1px solid #0089D6;color:#0089D6">Azure</span>
+        <h4>Azure DevOps</h4>
+        <p>End-to-end DevOps platform</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#0089D622;border:1px solid #0089D6;color:#0089D6">Azure</span>
+        <h4>Azure Pipelines</h4>
+        <p>CI/CD pipeline service</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.microsoft.com/en-us/azure/devops/repos/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#0089D622;border:1px solid #0089D6;color:#0089D6">Azure</span>
+        <h4>Azure Repos</h4>
+        <p>Git repositories in Azure</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.microsoft.com/en-us/azure/devops/artifacts/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#0089D622;border:1px solid #0089D6;color:#0089D6">Azure</span>
+        <h4>Azure Artifacts</h4>
+        <p>Package management service</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.microsoft.com/en-us/azure/container-registry/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#0089D622;border:1px solid #0089D6;color:#0089D6">Azure</span>
+        <h4>Azure Container Registry</h4>
+        <p>Private container registry</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#0089D622;border:1px solid #0089D6;color:#0089D6">Azure</span>
+        <h4>Azure Bicep</h4>
+        <p>Azure IaC language</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.github.com/en/actions" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#0089D622;border:1px solid #0089D6;color:#0089D6">Azure</span>
+        <h4>GitHub Actions</h4>
+        <p>CI/CD workflow automation</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://docs.microsoft.com/en-us/azure/devops/test/" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#0089D622;border:1px solid #0089D6;color:#0089D6">Azure</span>
+        <h4>Azure Test Plans</h4>
+        <p>Test management platform</p>
+        <span class="doc-link">Official Docs →</span>
+      </a></div>
+</section>
+
+<section>
+  <h2>GCP Resources</h2>
+  <p class="section-sub">Official Google Cloud documentation for Development Operations</p>
+  <div class="divider"></div>
+  <div class="grid-3">
+      <a href="https://cloud.google.com/build/docs" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#4285F422;border:1px solid #4285F4;color:#4285F4">GCP</span>
+        <h4>Cloud Build</h4>
+        <p>CI/CD for GCP</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://cloud.google.com/deploy/docs" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#4285F422;border:1px solid #4285F4;color:#4285F4">GCP</span>
+        <h4>Cloud Deploy</h4>
+        <p>Managed continuous delivery</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://cloud.google.com/artifact-registry/docs" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#4285F422;border:1px solid #4285F4;color:#4285F4">GCP</span>
+        <h4>Artifact Registry</h4>
+        <p>Universal artifact management</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://cloud.google.com/source-repositories/docs" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#4285F422;border:1px solid #4285F4;color:#4285F4">GCP</span>
+        <h4>Cloud Source Repositories</h4>
+        <p>Private Git repositories</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://cloud.google.com/config-connector/docs" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#4285F422;border:1px solid #4285F4;color:#4285F4">GCP</span>
+        <h4>Config Connector</h4>
+        <p>Kubernetes for GCP resources</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://cloud.google.com/scheduler/docs" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#4285F422;border:1px solid #4285F4;color:#4285F4">GCP</span>
+        <h4>Cloud Scheduler</h4>
+        <p>Managed cron job service</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://cloud.google.com/tasks/docs" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#4285F422;border:1px solid #4285F4;color:#4285F4">GCP</span>
+        <h4>Cloud Tasks</h4>
+        <p>Asynchronous task execution</p>
+        <span class="doc-link">Official Docs →</span>
+      </a>
+      <a href="https://cloud.google.com/docs/terraform" target="_blank" rel="noopener" class="product-card">
+        <span class="cloud-badge" style="background:#4285F422;border:1px solid #4285F4;color:#4285F4">GCP</span>
+        <h4>Terraform on GCP</h4>
+        <p>Infrastructure as code on GCP</p>
+        <span class="doc-link">Official Docs →</span>
+      </a></div>
+</section>
+
+<section>
+  <h2>Featured Articles</h2>
+  <p class="section-sub">In-depth technical blog posts on Development Operations</p>
+  <div class="divider"></div>
+  <div class="grid-2">
+      <a href="blog/post-01.html" class="blog-card">
+        <div class="blog-num">BLOG POST 01</div>
+        <h3>Building Enterprise CI/CD with GitHub Actions and AWS</h3>
+        <p>OIDC authentication, matrix builds, reusable workflows, and deployment environments</p>
+        <span class="read-more">Read article →</span>
+      </a>
+      <a href="blog/post-02.html" class="blog-card">
+        <div class="blog-num">BLOG POST 02</div>
+        <h3>Terraform at Enterprise Scale: Module Design and Registry Architecture</h3>
+        <p>Private registry, module versioning, testing with Terratest, and CD for modules</p>
+        <span class="read-more">Read article →</span>
+      </a>
+      <a href="blog/post-03.html" class="blog-card">
+        <div class="blog-num">BLOG POST 03</div>
+        <h3>Azure DevOps: Complete CI/CD for Microservices</h3>
+        <p>Multi-stage pipelines, environments, variable groups, and AKS deployment patterns</p>
+        <span class="read-more">Read article →</span>
+      </a></div>
+  <div style="text-align:center;margin-top:2rem">
+    <a href="blog/index.html" class="btn btn-outline">View All 10 Articles →</a>
+  </div>
+</section>
+
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://aws.amazon.com/documentation/" target="_blank">AWS Docs</a>
+      <a href="https://docs.microsoft.com/en-us/azure/" target="_blank">Azure Docs</a>
+      <a href="https://cloud.google.com/docs" target="_blank">GCP Docs</a>
+      <a href="https://github.com/kogunlowo123/kogunlowo123.github.io" target="_blank">GitHub</a>
+    </div>
+    <p>🔄 Development Operations | Cloud Engineering Reference Hub</p>
+    <p style="margin-top:0.4rem">All documentation links reference official vendor sources. Built for education.</p>
+  </footer>
+
+
+<script>
+// Animate cards on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.product-card, .blog-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
